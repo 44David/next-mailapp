@@ -1,5 +1,13 @@
 import "~/styles/globals.css";
 
+import {
+  ClerkProvider,
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  UserButton
+} from '@clerk/nextjs'
+
 import { GeistSans } from "geist/font/sans";
 
 export const metadata = {
@@ -8,14 +16,39 @@ export const metadata = {
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
+function Navbar() {
+  return (
+
+      <nav className="flex items-center justify-between w-full p-4 mb-4 text-xl font-semibold border-b">
+        <h1>NextJS Mail</h1>
+        <SignedOut>
+          <SignInButton />
+        </SignedOut>
+
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+    </nav>
+
+
+  )
+
+}
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
+    <ClerkProvider>
     <html lang="en" className={`${GeistSans.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
+    </ClerkProvider>
+
   );
 }
